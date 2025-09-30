@@ -12,22 +12,25 @@
 
 #include "philo.h"
 
-bool    check_valid_chars(char **str)
+bool	check_valid_chars(char **str)
 {
 	int	i;
 	int	j;
 
 	i = 1;
+	j = 0;
 	while (str[i])
 	{
 		j = 0;
 		while (str[i][j])
 		{
-			if (!ft_isdigit(str[i][j]) && str[i][j] != '+' && str[i][j] != '-')
+			if (!(ft_isdigit(str[i][j])) &&
+			str[i][j] != '+' && str[i][j] != ' ')
 				return (false);
-			else if (str[i][j] == '+')
+			else if (str[i][j] == '+' )
 			{
-				if ((j > 0 && str[i][j - 1] != ' ' )|| !ft_isdigit(str[i][j + 1]))
+				if ((j > 0 && str[i][j - 1] != ' ') ||
+				!ft_isdigit(str[i][j + 1]))
 					return (false);
 			}
 			j++;
@@ -39,20 +42,20 @@ bool    check_valid_chars(char **str)
 
 bool	is_valid_token(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	if (str[0] == '+' && str[1] =='\0')
+	if ((str[0] == '+' ) && str[1] == '\0')
 		return (false);
-	while(str[i] && (str[i] == ' ' || str[i] == '\t'))
+	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
 		i++;
 	if (str[i] == '\0')
 		return (false);
-	else if(str[i])
+	else if (str[i])
 	{
-		while(str[i])
+		while (str[i])
 		{
-			if (str[i] == '+' && !ft_isdigit(str[i + 1]))
+			if ((str[i] == '+') && !ft_isdigit(str[i + 1]))
 				return (false);
 			i++;
 		}
@@ -62,10 +65,10 @@ bool	is_valid_token(char *str)
 
 bool	check_valid_operators(int ac, char **av)
 {
-	int i;
-	int count;
+	int	i;
+	int	count;
 
-	i = ac -1;
+	i = ac - 1;
 	count = 0;
 	while (i > 0)
 	{

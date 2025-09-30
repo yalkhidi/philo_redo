@@ -29,4 +29,8 @@ void    print_message(char *message);
 int	words_count(char const *s);
 char	**ft_split(char const *s);
 void	free_split(char **split);
+bool    check_valid_chars(char **str);
+bool	check_valid_operators(int ac, char **av);
+unsigned long *get_input(int ac, char **av);
+t_input *assign_inputs(unsigned long *input_array);
 #endif
