@@ -6,11 +6,11 @@
 /*   By: yalkhidi <yalkhidi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 17:14:23 by yalkhidi          #+#    #+#             */
-/*   Updated: 2025/09/27 17:21:39 by yalkhidi         ###   ########.fr       */
+/*   Updated: 2025/10/01 16:31:49 by yalkhidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../philo.h"
 
 unsigned long	ft_atoi(const char *str)
 {
@@ -61,4 +61,39 @@ void	print_message(char *message)
 		i++;
 	write(2, message, i);
 	exit(1);
+}
+
+void	clean(t_input *input, char *message)
+{
+	int i;
+
+	if (input->forks)
+	{
+		i = -1;
+		while(++i < (int)input->n_philo)
+			pthread_mutex_destroy(&input->forks[i]);
+		free(input->forks);
+	}
+	if (input->philos)
+	{
+		i = -1;
+		while(++i < (int)input->n_philo)
+		{
+			pthread_mutex_destroy(&input->philos[i].meal_lock);
+			pthread_mutex_destroy(&input->philos[i].write_lock);
+			pthread_mutex_destroy(&input->philos[i].dead_lock);
+		}
+		free(input->philos);
+	}
+	if (input)
+		free(input);
+	if (message)
+		print_message(message);
+}
+
+void	status_log(t_philo philo, char *status)
+{
+	pthread_mutex_lock(&philo.write_lock);
+	printf("%ld %u %s\n", get_time() - philo.start_time, philo.id, status);
+	pthread_mutex_unlock(&philo.write_lock);
 }

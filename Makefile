@@ -1,10 +1,13 @@
 cc:= CC
 CCFLAGS:= -Wall -Werror -Wextra
 
-FILES:=	assign_inputs.c \
-		ft_split.c \
-		parsing.c \
-		utils.c \
+FILES:=	parsing/assign_inputs.c \
+		parsing/ft_split.c \
+		parsing/parsing.c \
+		parsing/utils.c \
+		assign_philos.c \
+		monitor.c \
+		routine.c \
 		main.c
 
 OFILES:= $(FILES:.c=.o)
@@ -22,7 +25,7 @@ all: $(NAME)
 	$(CC) $(CCFLAGS) -c $< -o $@
 
 $(NAME): $(OFILES)
-	$(CC) $(CCFLAGS) $(OFILES) -o $(NAME)
+	$(CC) $(CCFLAGS) $(OFILES) -o $(NAME) -pthread
 
 bonus: $(OBONUS)
 	$(CC) $(CCFLAGS) $(OBONUS) -o $(BNAME)

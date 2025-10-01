@@ -6,11 +6,11 @@
 /*   By: yalkhidi <yalkhidi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:57:34 by yalkhidi          #+#    #+#             */
-/*   Updated: 2025/09/27 17:33:19 by yalkhidi         ###   ########.fr       */
+/*   Updated: 2025/10/01 09:26:20 by yalkhidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../philo.h"
 
 bool	check_valid_chars(char **str)
 {

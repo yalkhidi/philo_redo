@@ -6,11 +6,11 @@
 /*   By: yalkhidi <yalkhidi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:57:07 by yalkhidi          #+#    #+#             */
-/*   Updated: 2025/09/27 17:41:29 by yalkhidi         ###   ########.fr       */
+/*   Updated: 2025/10/01 14:29:42 by yalkhidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../philo.h"
 
 bool	split_arg(char *arg, unsigned long *in_array, int *in_ptr)
 {
@@ -78,7 +78,7 @@ t_input *assign_inputs(unsigned long *input_array)
 		input->n_t_philo_eat = input_array[4];
 	else
 		input->n_t_philo_eat = 0;
-
+	input->finished = 0;
 	free(input_array);
 	return (input);
 }

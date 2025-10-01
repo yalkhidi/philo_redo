@@ -6,11 +6,11 @@
 /*   By: yalkhidi <yalkhidi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 17:32:14 by yalkhidi          #+#    #+#             */
-/*   Updated: 2025/09/27 17:32:23 by yalkhidi         ###   ########.fr       */
+/*   Updated: 2025/10/01 09:26:16 by yalkhidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../philo.h"
 
 static int	check(char s)
 {

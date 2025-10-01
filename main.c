@@ -18,7 +18,7 @@ int main(int ac, char **av)
     if (array)
     {
         input = assign_inputs(array);
-        print_inputs(input);
+        init(input);
         if (input)
             free(input);
     }    
