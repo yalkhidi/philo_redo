@@ -5,6 +5,7 @@ FILES:=	parsing/assign_inputs.c \
 		parsing/ft_split.c \
 		parsing/parsing.c \
 		parsing/utils.c \
+		destroy.c \
 		assign_philos.c \
 		monitor.c \
 		routine.c \

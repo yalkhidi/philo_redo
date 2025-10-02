@@ -6,7 +6,7 @@
 /*   By: yalkhidi <yalkhidi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:57:07 by yalkhidi          #+#    #+#             */
-/*   Updated: 2025/10/01 14:29:42 by yalkhidi         ###   ########.fr       */
+/*   Updated: 2025/10/02 12:56:03 by yalkhidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ unsigned long	*get_input(int ac, char **av)
 	return (in_array);
 }
 
-t_input *assign_inputs(unsigned long *input_array)
+t_input	*assign_inputs(unsigned long *input_array)
 {
-	t_input *input;
+	t_input	*input;
 
 	input = malloc(sizeof(t_input));
 	if (!input)
