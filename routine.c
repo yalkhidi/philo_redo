@@ -15,9 +15,8 @@
 int	alive(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->dead_lock);
-	if (philo->dead == 1)
+	if (philo->dead == 1 || philo->input->finished == 1)
 	{
-		printf("PHILO ID: %d\n", philo->id);
 		pthread_mutex_unlock(&philo->dead_lock);
 		set_all_dead(philo->input);
 		return (0);
@@ -26,11 +25,22 @@ int	alive(t_philo *philo)
 	return (1);
 }
 
+void smart_usleep(t_input *input, unsigned long time_in_ms)
+{
+	unsigned long start = get_time();
+	while (!input->finished)
+	{
+		if ((get_time() - start) >= time_in_ms)
+			break;
+		usleep(500); // sleep in very small chunks
+	}
+}
+
 void	sleep_think(t_philo *philo)
 {
-	status_log(*philo, "is sleeping");
-	usleep(philo->input->t_sleep * 1000);
-	status_log(*philo, "is thinking");
+	status_log(philo, "is sleeping");
+	smart_usleep(philo->input, philo->input->t_sleep);
+	status_log(philo, "is thinking");
 }
 
 void	*routine(void *arg)
@@ -43,33 +53,24 @@ void	*routine(void *arg)
 	while (alive(philo))
 	{
 		pthread_mutex_lock(&philo->input->forks[philo->r_fork]);
-		status_log(*philo, "has taken a fork");
+		status_log(philo, "has taken a fork");
 		if (philo->input->n_philo == 1)
 		{
-			philo->eating = 1;
-			status_log(*philo, "is eating");
-			pthread_mutex_lock(&philo->meal_lock);
-			philo->last_meal = get_time();
-			philo->meals_ate++;
-			printf("%u MEALS EATEN: %u\n", philo->id, philo->meals_ate);
-			pthread_mutex_unlock(&philo->meal_lock);
-			usleep(philo->input->t_eat * 1000);
-			philo->eating = 0;
+			usleep(philo->input->t_die * 1000);
 			pthread_mutex_unlock(&philo->input->forks[philo->r_fork]);
-			sleep_think(philo);
 			return (arg);
 		}
 		pthread_mutex_lock(&philo->input->forks[philo->l_fork]);
-		status_log(*philo, "has taken a fork");
-		philo->eating = 1;
-		status_log(*philo, "is eating");
+		status_log(philo, "has taken a fork");
+		status_log(philo, "is eating");
 		pthread_mutex_lock(&philo->meal_lock);
+		philo->eating = 1;
 		philo->last_meal = get_time();
 		philo->meals_ate++;
-		printf("%u MEALS EATEN: %u\n", philo->id, philo->meals_ate);
-		pthread_mutex_unlock(&philo->meal_lock);
-		usleep(philo->input->t_eat * 1000);
+		// usleep(philo->input->t_eat * 1000);
+		smart_usleep(philo->input, philo->input->t_eat);
 		philo->eating = 0;
+		pthread_mutex_unlock(&philo->meal_lock);
 		pthread_mutex_unlock(&philo->input->forks[philo->l_fork]);
 		pthread_mutex_unlock(&philo->input->forks[philo->r_fork]);
 		sleep_think(philo);

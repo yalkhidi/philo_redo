@@ -32,6 +32,8 @@ void	init(t_input *input)
 	input->forks = malloc(sizeof(pthread_mutex_t) * input->n_philo);
 	if (!input->forks)
 		clean(input, "Error\nCouldn't allocate forks\n");
+	if (pthread_mutex_init(&input->write_lock, NULL) != 0)
+		clean(input, "Error\nCouldn't initiate write mutex\n");
 	i = 0;
 	while (i < (int)input->n_philo)
 	{
@@ -39,8 +41,6 @@ void	init(t_input *input)
 			clean(input, "Error\nCouldn't initiate fork mutex\n");
 		if (pthread_mutex_init(&input->philos[i].meal_lock, NULL) != 0)
 			clean(input, "Error\nCouldn't initiate meal mutex\n");
-		if (pthread_mutex_init(&input->philos[i].write_lock, NULL) != 0)
-			clean(input, "Error\nCouldn't initiate write mutex\n");
 		if (pthread_mutex_init(&input->philos[i].dead_lock, NULL) != 0)
 			clean(input, "Error\nCouldn't initiate dead mutex\n");
 		i++;
@@ -83,12 +83,14 @@ void	create_threads(t_input *input)
 				(void *)&input->philos[i]) != 0)
 			clean(input, "Error\nCouldn't create thread\n");
 	}
-	if (pthread_join(waiter, NULL) != 0)
-		clean(input, "Error\nCouldn't join thread\n");
+	// if (pthread_join(waiter, NULL) != 0)
+	// 	clean(input, "Error\nCouldn't join thread\n");
 	i = -1;
 	while (++i < (int)input->n_philo)
 	{
 		if (pthread_join(input->philos[i].thread, NULL) != 0)
 			clean(input, "Error\nCouldn't join thread\n");
 	}
+	if (pthread_join(waiter, NULL) != 0)
+		clean(input, "Error\nCouldn't join thread\n");
 }

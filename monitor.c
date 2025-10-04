@@ -35,9 +35,14 @@ int	if_dead(t_input *input)
 		if (check_death(&input->philos[i]))
 		{
 			pthread_mutex_lock(&input->philos[i].dead_lock);
-			input->philos[i].dead = 1;
+			if (!input->finished)
+			{
+				input->philos[i].dead = 1;
+				input->finished = 1;
+				// status_log(&input->philos[i], "is dead");
+				printf("%ld %u died\n", get_time() - input->philos[i].start_time, input->philos[i].id);
+			}
 			pthread_mutex_unlock(&input->philos[i].dead_lock);
-			status_log(input->philos[i], "is dead");
 			return (1);
 		}
 	}
@@ -47,20 +52,20 @@ int	if_dead(t_input *input)
 int	check_if_all_ate(t_input *input)
 {
 	int	i;
-	int	finished;
+	int	meals;
 
 	if (input->n_t_philo_eat > 0)
 	{
 		i = -1;
-		finished = 0;
+		meals = 0;
 		while (++i < (int)input->n_philo)
 		{
 			pthread_mutex_lock(&input->philos[i].meal_lock);
 			if (input->philos[i].meals_ate >= input->n_t_philo_eat)
-				finished++;
+				meals++;
 			pthread_mutex_unlock(&input->philos[i].meal_lock);
 		}
-		if (finished == (int)input->n_philo)
+		if (meals == (int)input->n_philo)
 		{
 			set_all_dead(input);
 			return (1);
@@ -78,6 +83,7 @@ void	*moniter(void *arg)
 	{
 		if (if_dead(input) || check_if_all_ate(input))
 			break ;
+		usleep(100);
 	}
 	return (arg);
 }

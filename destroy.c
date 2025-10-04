@@ -25,11 +25,12 @@ void	set_all_dead(t_input *input)
 	}
 }
 
-void	status_log(t_philo philo, char *status)
+void	status_log(t_philo *philo, char *status)
 {
-	pthread_mutex_lock(&philo.write_lock);
-	printf("%ld %u %s\n", get_time() - philo.start_time, philo.id, status);
-	pthread_mutex_unlock(&philo.write_lock);
+	pthread_mutex_lock(&philo->input->write_lock);
+	if (philo->input->finished == 0)
+		printf("%ld %u %s\n", get_time() - philo->start_time, philo->id, status);
+	pthread_mutex_unlock(&philo->input->write_lock);
 }
 
 void	clean(t_input *input, char *message)
@@ -49,11 +50,11 @@ void	clean(t_input *input, char *message)
 		while (++i < (int)input->n_philo)
 		{
 			pthread_mutex_destroy(&input->philos[i].meal_lock);
-			pthread_mutex_destroy(&input->philos[i].write_lock);
 			pthread_mutex_destroy(&input->philos[i].dead_lock);
 		}
 		free(input->philos);
 	}
+	pthread_mutex_destroy(&input->write_lock);
 	if (input)
 		free(input);
 	if (message)

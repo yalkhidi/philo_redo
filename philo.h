@@ -35,7 +35,6 @@ typedef struct s_philo
 	unsigned int	meals_ate;
 	unsigned long	start_time;
 	pthread_mutex_t	meal_lock;
-	pthread_mutex_t	write_lock;
 	pthread_mutex_t	dead_lock;
 	t_input			*input;
 }	t_philo;
@@ -49,6 +48,7 @@ typedef struct s_input
 	unsigned long	n_t_philo_eat;
 	unsigned long	finished;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	write_lock;
 	t_philo			*philos;
 }	t_input;
 
@@ -64,7 +64,7 @@ bool			check_valid_operators(int ac, char **av);
 unsigned long	*get_input(int ac, char **av);
 t_input			*assign_inputs(unsigned long *input_array);
 void			clean(t_input *input, char *message);
-void			status_log(t_philo philo, char *status);
+void			status_log(t_philo *philo, char *status);
 void			set_all_dead(t_input *input);
 unsigned long	get_time(void);
 void			init(t_input *input);
